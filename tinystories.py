@@ -249,6 +249,20 @@ class Task:
             y = y.to(device, non_blocking=True)
             yield x, y
 
+class TaskTPU:
+
+    @staticmethod
+    def iter_batches(batch_size, device, num_workers=0, **dataset_kwargs):
+        ds = PretokDataset(**dataset_kwargs)
+        dl = torch.utils.data.DataLoader(
+            ds, batch_size=batch_size, pin_memory=True, num_workers=num_workers
+        )
+        pl.MpDeviceLoader(training_loader, device)
+        for x, y in dl:
+            x = x.to(device, non_blocking=True)
+            y = y.to(device, non_blocking=True)
+            yield x, y
+
 # -----------------------------------------------------------------------------
 # CLI for constructing the dataset
 
