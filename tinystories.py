@@ -257,7 +257,7 @@ class TaskTPU:
         dl = torch.utils.data.DataLoader(
             ds, batch_size=batch_size, pin_memory=True, num_workers=num_workers
         )
-        pl.MpDeviceLoader(training_loader, device)
+        pl.MpDeviceLoader(dl, device)
         for x, y in dl:
             x = x.to(device, non_blocking=True)
             y = y.to(device, non_blocking=True)
